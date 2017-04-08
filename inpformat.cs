@@ -83,10 +83,10 @@ namespace makeinp
 				var rst = tg + "(";
 				for(var i = 0; i < ps.Length; i++) {
 					if(ps[i] != string.Empty) {
-						rst += ps[i];
-						if(i != ps.Length - 1) {
+						if(i != 0) {
 							rst += ",";
 						}
+						rst += ps[i];
 					}
 				}
 				rst += ")";
