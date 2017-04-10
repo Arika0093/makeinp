@@ -68,10 +68,12 @@
 			this.btn_usechk = new System.Windows.Forms.Button();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.tlp_opt = new System.Windows.Forms.TableLayoutPanel();
+			this.label11 = new System.Windows.Forms.Label();
 			this.label10 = new System.Windows.Forms.Label();
 			this.label9 = new System.Windows.Forms.Label();
 			this.nmr_optcyc = new System.Windows.Forms.NumericUpDown();
 			this.chk_transition = new System.Windows.Forms.CheckBox();
+			this.txb_lockpos = new System.Windows.Forms.TextBox();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.tlp_freq = new System.Windows.Forms.TableLayoutPanel();
 			this.label12 = new System.Windows.Forms.Label();
@@ -84,8 +86,7 @@
 			this.txb_viewfile = new System.Windows.Forms.TextBox();
 			this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
 			this.btn_next = new System.Windows.Forms.Button();
-			this.label11 = new System.Windows.Forms.Label();
-			this.txb_lockpos = new System.Windows.Forms.TextBox();
+			this.btn_selrun = new System.Windows.Forms.Button();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
@@ -739,6 +740,17 @@
 			this.tlp_opt.Size = new System.Drawing.Size(624, 451);
 			this.tlp_opt.TabIndex = 0;
 			// 
+			// label11
+			// 
+			this.label11.AutoSize = true;
+			this.label11.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.label11.Location = new System.Drawing.Point(3, 0);
+			this.label11.Name = "label11";
+			this.label11.Size = new System.Drawing.Size(112, 32);
+			this.label11.TabIndex = 18;
+			this.label11.Text = "Locked:";
+			this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			// 
 			// label10
 			// 
 			this.label10.AutoSize = true;
@@ -788,6 +800,15 @@
 			this.chk_transition.TabIndex = 17;
 			this.chk_transition.Text = "Calc Transition Mode";
 			this.chk_transition.UseVisualStyleBackColor = true;
+			// 
+			// txb_lockpos
+			// 
+			this.txb_lockpos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.txb_lockpos.Enabled = false;
+			this.txb_lockpos.Location = new System.Drawing.Point(121, 3);
+			this.txb_lockpos.Name = "txb_lockpos";
+			this.txb_lockpos.Size = new System.Drawing.Size(500, 25);
+			this.txb_lockpos.TabIndex = 19;
 			// 
 			// tabPage3
 			// 
@@ -933,6 +954,7 @@
 			this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 98F));
 			this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
 			this.tableLayoutPanel5.Controls.Add(this.btn_next, 3, 0);
+			this.tableLayoutPanel5.Controls.Add(this.btn_selrun, 0, 0);
 			this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 488);
 			this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
@@ -954,25 +976,16 @@
 			this.btn_next.UseVisualStyleBackColor = true;
 			this.btn_next.Click += new System.EventHandler(this.btn_next_Click);
 			// 
-			// label11
+			// btn_selrun
 			// 
-			this.label11.AutoSize = true;
-			this.label11.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.label11.Location = new System.Drawing.Point(3, 0);
-			this.label11.Name = "label11";
-			this.label11.Size = new System.Drawing.Size(112, 32);
-			this.label11.TabIndex = 18;
-			this.label11.Text = "Locked:";
-			this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			// 
-			// txb_lockpos
-			// 
-			this.txb_lockpos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-			this.txb_lockpos.Enabled = false;
-			this.txb_lockpos.Location = new System.Drawing.Point(121, 3);
-			this.txb_lockpos.Name = "txb_lockpos";
-			this.txb_lockpos.Size = new System.Drawing.Size(500, 25);
-			this.txb_lockpos.TabIndex = 19;
+			this.btn_selrun.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.btn_selrun.Location = new System.Drawing.Point(3, 3);
+			this.btn_selrun.Name = "btn_selrun";
+			this.btn_selrun.Size = new System.Drawing.Size(117, 39);
+			this.btn_selrun.TabIndex = 2;
+			this.btn_selrun.Text = "create .sh";
+			this.btn_selrun.UseVisualStyleBackColor = true;
+			this.btn_selrun.Click += new System.EventHandler(this.btn_selrun_Click);
 			// 
 			// main
 			// 
@@ -1084,6 +1097,7 @@
 		private System.Windows.Forms.Label label12;
 		private System.Windows.Forms.Label label11;
 		private System.Windows.Forms.TextBox txb_lockpos;
+		private System.Windows.Forms.Button btn_selrun;
 	}
 }
 

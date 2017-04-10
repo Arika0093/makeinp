@@ -109,6 +109,18 @@ namespace makeinp
 			generateInputFile();
 		}
 
+		// shellscript generator
+		private void btn_selrun_Click(object sender, EventArgs e)
+		{
+			var fssel = new OpenFileDialog();
+			fssel.Multiselect = true;
+			fssel.Filter = "Input Files|*.inp|All Files|*.*";
+			if(fssel.ShowDialog(this) == DialogResult.OK) {
+				var slist = new shlist(fssel.FileNames);
+				slist.ShowDialog(this);
+			}
+		}
+
 		// tabcontrol-index changed
 		private void tabControl1_Deselecting(object sender, TabControlCancelEventArgs e)
 		{

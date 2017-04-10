@@ -55,6 +55,18 @@
     <Compile Include="program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="setting.cs" />
+    <Compile Include="shedit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="shedit.Designer.cs">
+      <DependentUpon>shedit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="shlist.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="shlist.Designer.cs">
+      <DependentUpon>shlist.cs</DependentUpon>
+    </Compile>
     <Compile Include="simpleedit.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -73,6 +85,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="shedit.resx">
+      <DependentUpon>shedit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="shlist.resx">
+      <DependentUpon>shlist.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="simpleedit.resx">
       <DependentUpon>simpleedit.cs</DependentUpon>
     </EmbeddedResource>
