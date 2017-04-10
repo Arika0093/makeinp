@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Windows;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace makeinp
 {
@@ -34,6 +35,8 @@ namespace makeinp
 		// IOP
 		public string iop;
 		// OPT
+		[XmlIgnore]
+		public List<string> lockpos;
 		public int optcyc;
 		public bool istransition;
 		// FREQ
@@ -50,8 +53,9 @@ namespace makeinp
 			this.star = "*";
 			this.istest = true;
 			this.spin = 1;
-			this.scfcond = "sleazy";
+			this.scfcond = "";
 			this.scfmax = 100;
+			this.lockpos = new List<string>();
 			this.iop = "1/8=10,2/9=111,3/24=0,6/6=1,6/8=2,6/9=2";
 			this.optcyc = 60;
 		}
@@ -79,7 +83,10 @@ namespace makeinp
 		// function
 		public string valueset(string tg, params string[] ps)
 		{
-			if(ps.Length >= 2) {
+			if(ps.Length >= 1 && ps[0].IndexOf('=') < 0) {
+				return tg + "=" + ps[0];
+			}
+			else if(ps.Length >= 1) {
 				var rst = tg + "(";
 				for(var i = 0; i < ps.Length; i++) {
 					if(ps[i] != string.Empty) {
@@ -91,9 +98,6 @@ namespace makeinp
 				}
 				rst += ")";
 				return rst;
-			}
-			else if(ps.Length >= 1) {
-				return tg + "=" + ps[0];
 			}
 			else {
 				return tg;	// ERROR?
@@ -124,13 +128,13 @@ namespace makeinp
 				"#p " + md.GetMethodName() + "\n" +
 				this.output_addition(md, st) +
 				valueset("iop", md.iop.Split(',')) + "\n" +
-				valueset("scf", md.scfcond, "maxcycle=" + md.scfmax) + "\n" +
+				valueset("scf", /*md.scfcond, */"maxcycle=" + md.scfmax) + "\n" +
 				(md.isusecheckfile ? "guess=read geom=check \n" : "") + 
 				"\n" +
 				genfilename(md) + " " + getmethodabst(md) + "\n" +
 				"\n" +
 				md.charge + " " + md.spin + "\n" +
-				(!md.isusecheckfile ? md.inputdata.GetLocation() : "") +
+				(!md.isusecheckfile ? md.inputdata.GetLocation(md.lockpos.ToArray()) : "") +
 				"\n";
 			return rst;
 		}

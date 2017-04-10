@@ -23,6 +23,7 @@ namespace makeinp
 		bool isUseCheckfile = false;
 		string UseChkLocation = String.Empty;
 		string savLocation = String.Empty;
+		string iopsetting = "";
 
 		// initialize
 		public main()
@@ -57,6 +58,7 @@ namespace makeinp
 			inpDataToLstView();
 			// edit enabled
 			toggleControlEnabled(true);
+			txb_lockpos.Enabled = inputData.IsZMatrix();
 		}
 
 		// set use-checkfile
@@ -69,6 +71,7 @@ namespace makeinp
 				isUseCheckfile = true;
 				UseChkLocation = dedit.inputText;
 				toggleControlEnabled(true);
+				txb_lockpos.Enabled = false;
 			}
 		}
 
@@ -89,39 +92,27 @@ namespace makeinp
 			nmr_nproc.Enabled = !chk_noasgn.Checked;
 		}
 
-		// page move
-		private void btn_back_Click(object sender, EventArgs e)
+		// iop edit
+		private void btn_iop_Click(object sender, EventArgs e)
 		{
-			moveTabpage(-1);
+			var bedit = new simpleedit();
+			bedit.inputText = iopsetting;
+			bedit.titleCaption = bedit.description = "IOP Setting";
+			if(bedit.ShowDialog() == DialogResult.OK) {
+				iopsetting = bedit.inputText;
+			}
 		}
+
+		// page move
 		private void btn_next_Click(object sender, EventArgs e)
 		{
-			var tpagenum = tabControl1.TabCount;
-			var tpagenow = tabControl1.SelectedIndex;
-			if (tpagenow >= tpagenum - 1) {
-				generateInputFile();
-			}
-			else {
-				moveTabpage(+1);
-			}
+			generateInputFile();
 		}
 
 		// tabcontrol-index changed
 		private void tabControl1_Deselecting(object sender, TabControlCancelEventArgs e)
 		{
-			if(!inputData.IsDataExist && !isUseCheckfile) {
-				return;
-			}
-			var exist_genfile = (chk_isopt.Checked || chk_isfreq.Checked || chk_isirc.Checked);
-			var required_item = (txb_name.Text != "" && savLocation != "" && cmb_theory.Text != "" && cmb_basis.Text != "");
-			if(!exist_genfile) {
-				MessageBox.Show("Please check 'Gen-File' at least one.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				e.Cancel = true;
-			}
-			else if(!required_item) {
-				MessageBox.Show("Please enter required field: (name/location/method)", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				e.Cancel = true;
-			}
+			e.Cancel = !checkInputData();
 			return;
 		}
 		private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -134,8 +125,6 @@ namespace makeinp
 			var tpagenow = tabControl1.SelectedIndex;
 			var islastpage = (tpagenow >= tpagenum - 1);
 			var iseditpage = islastpage;
-			btn_back.Enabled = (tpagenow > 0);
-			btn_next.Text = islastpage ? "&Generate" : "&Next";
 			if(iseditpage) {
 				// temp-inpdata create
 				makeinpdata mid = new makeinpdata();
@@ -177,6 +166,7 @@ namespace makeinp
 				var xserial = new XmlSerializer(typeof(setting));
 				var sr = new StreamReader("setting.xml");
 				myst = (setting)xserial.Deserialize(sr);
+				iopsetting = myst.latestData.iop;
 				sr.Close();
 			}
 			// if no-setting username
@@ -236,6 +226,25 @@ namespace makeinp
 			chk_noasgn_CheckedChanged(null, null);
 		}
 
+		// check data-luck
+		private bool checkInputData()
+		{
+			if(!inputData.IsDataExist && !isUseCheckfile) {
+				return true;
+			}
+			var exist_genfile = (chk_isopt.Checked || chk_isfreq.Checked || chk_isirc.Checked);
+			var required_item = (txb_name.Text != "" && savLocation != "" && cmb_theory.Text != "" && cmb_basis.Text != "");
+			if(!exist_genfile) {
+				MessageBox.Show("Please check 'Gen-File' at least one.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return false;
+			}
+			else if(!required_item) {
+				MessageBox.Show("Please enter required field: (name/location/method)", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return false;
+			}
+			return true;
+		}
+
 		// tabpage move-function
 		private bool moveTabpage(int direc)
 		{
@@ -277,7 +286,10 @@ namespace makeinp
 			mid.genfile_opt = chk_isopt.Checked;
 			mid.genfile_freq = chk_isfreq.Checked;
 			mid.genfile_irc = chk_isirc.Checked;
+			// iop
+			mid.iop = iopsetting;
 			// opt
+			mid.lockpos = (txb_lockpos.Text.Split(new char[] { ',', '/' })).ToList();
 			mid.optcyc = (int)nmr_optcyc.Value;
 			mid.istransition = chk_transition.Checked;
 		}
@@ -285,6 +297,9 @@ namespace makeinp
 		// generate .inp file
 		private void generateInputFile()
 		{
+			if(!checkInputData()) {
+				return;
+			}
 			var rst = true;
 			var mid = new makeinpdata();
 			midApply(ref mid);

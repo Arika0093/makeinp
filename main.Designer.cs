@@ -84,7 +84,8 @@
 			this.txb_viewfile = new System.Windows.Forms.TextBox();
 			this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
 			this.btn_next = new System.Windows.Forms.Button();
-			this.btn_back = new System.Windows.Forms.Button();
+			this.label11 = new System.Windows.Forms.Label();
+			this.txb_lockpos = new System.Windows.Forms.TextBox();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
@@ -436,13 +437,13 @@
 			// btn_iop
 			// 
 			this.btn_iop.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.btn_iop.Enabled = false;
 			this.btn_iop.Location = new System.Drawing.Point(413, 3);
 			this.btn_iop.Name = "btn_iop";
 			this.btn_iop.Size = new System.Drawing.Size(42, 27);
 			this.btn_iop.TabIndex = 0;
 			this.btn_iop.Text = "iop";
 			this.btn_iop.UseVisualStyleBackColor = true;
+			this.btn_iop.Click += new System.EventHandler(this.btn_iop_Click);
 			// 
 			// nmr_spin
 			// 
@@ -720,15 +721,18 @@
 			this.tlp_opt.ColumnCount = 2;
 			this.tlp_opt.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 118F));
 			this.tlp_opt.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tlp_opt.Controls.Add(this.label10, 0, 1);
-			this.tlp_opt.Controls.Add(this.label9, 0, 0);
-			this.tlp_opt.Controls.Add(this.nmr_optcyc, 1, 0);
-			this.tlp_opt.Controls.Add(this.chk_transition, 1, 1);
+			this.tlp_opt.Controls.Add(this.label11, 0, 0);
+			this.tlp_opt.Controls.Add(this.label10, 0, 2);
+			this.tlp_opt.Controls.Add(this.label9, 0, 1);
+			this.tlp_opt.Controls.Add(this.nmr_optcyc, 1, 1);
+			this.tlp_opt.Controls.Add(this.chk_transition, 1, 2);
+			this.tlp_opt.Controls.Add(this.txb_lockpos, 1, 0);
 			this.tlp_opt.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tlp_opt.Enabled = false;
 			this.tlp_opt.Location = new System.Drawing.Point(0, 0);
 			this.tlp_opt.Name = "tlp_opt";
-			this.tlp_opt.RowCount = 3;
+			this.tlp_opt.RowCount = 4;
+			this.tlp_opt.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
 			this.tlp_opt.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
 			this.tlp_opt.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
 			this.tlp_opt.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -739,7 +743,7 @@
 			// 
 			this.label10.AutoSize = true;
 			this.label10.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.label10.Location = new System.Drawing.Point(3, 32);
+			this.label10.Location = new System.Drawing.Point(3, 64);
 			this.label10.Name = "label10";
 			this.label10.Size = new System.Drawing.Size(112, 32);
 			this.label10.TabIndex = 16;
@@ -750,7 +754,7 @@
 			// 
 			this.label9.AutoSize = true;
 			this.label9.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.label9.Location = new System.Drawing.Point(3, 0);
+			this.label9.Location = new System.Drawing.Point(3, 32);
 			this.label9.Name = "label9";
 			this.label9.Size = new System.Drawing.Size(112, 32);
 			this.label9.TabIndex = 14;
@@ -759,7 +763,7 @@
 			// 
 			// nmr_optcyc
 			// 
-			this.nmr_optcyc.Location = new System.Drawing.Point(121, 3);
+			this.nmr_optcyc.Location = new System.Drawing.Point(121, 35);
 			this.nmr_optcyc.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -778,7 +782,7 @@
 			// 
 			this.chk_transition.AutoSize = true;
 			this.chk_transition.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.chk_transition.Location = new System.Drawing.Point(121, 35);
+			this.chk_transition.Location = new System.Drawing.Point(121, 67);
 			this.chk_transition.Name = "chk_transition";
 			this.chk_transition.Size = new System.Drawing.Size(500, 26);
 			this.chk_transition.TabIndex = 17;
@@ -929,7 +933,6 @@
 			this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 98F));
 			this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
 			this.tableLayoutPanel5.Controls.Add(this.btn_next, 3, 0);
-			this.tableLayoutPanel5.Controls.Add(this.btn_back, 2, 0);
 			this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 488);
 			this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
@@ -947,21 +950,29 @@
 			this.btn_next.Name = "btn_next";
 			this.btn_next.Size = new System.Drawing.Size(134, 39);
 			this.btn_next.TabIndex = 1;
-			this.btn_next.Text = "&Next";
+			this.btn_next.Text = "&Generate";
 			this.btn_next.UseVisualStyleBackColor = true;
 			this.btn_next.Click += new System.EventHandler(this.btn_next_Click);
 			// 
-			// btn_back
+			// label11
 			// 
-			this.btn_back.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.btn_back.Enabled = false;
-			this.btn_back.Location = new System.Drawing.Point(397, 3);
-			this.btn_back.Name = "btn_back";
-			this.btn_back.Size = new System.Drawing.Size(92, 39);
-			this.btn_back.TabIndex = 0;
-			this.btn_back.Text = "&Back";
-			this.btn_back.UseVisualStyleBackColor = true;
-			this.btn_back.Click += new System.EventHandler(this.btn_back_Click);
+			this.label11.AutoSize = true;
+			this.label11.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.label11.Location = new System.Drawing.Point(3, 0);
+			this.label11.Name = "label11";
+			this.label11.Size = new System.Drawing.Size(112, 32);
+			this.label11.TabIndex = 18;
+			this.label11.Text = "Locked:";
+			this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			// 
+			// txb_lockpos
+			// 
+			this.txb_lockpos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.txb_lockpos.Enabled = false;
+			this.txb_lockpos.Location = new System.Drawing.Point(121, 3);
+			this.txb_lockpos.Name = "txb_lockpos";
+			this.txb_lockpos.Size = new System.Drawing.Size(500, 25);
+			this.txb_lockpos.TabIndex = 19;
 			// 
 			// main
 			// 
@@ -1048,7 +1059,6 @@
 		private System.Windows.Forms.TextBox txb_viewfile;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
 		private System.Windows.Forms.Button btn_next;
-		private System.Windows.Forms.Button btn_back;
 		private System.Windows.Forms.TextBox txb_location;
 		private System.Windows.Forms.TableLayoutPanel tlp_opt;
 		private System.Windows.Forms.TableLayoutPanel tlp_ts;
@@ -1072,9 +1082,8 @@
 		private System.Windows.Forms.CheckBox chk_transition;
 		private System.Windows.Forms.TableLayoutPanel tlp_freq;
 		private System.Windows.Forms.Label label12;
-
-
-
+		private System.Windows.Forms.Label label11;
+		private System.Windows.Forms.TextBox txb_lockpos;
 	}
 }
 

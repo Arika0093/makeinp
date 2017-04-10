@@ -76,7 +76,7 @@ namespace makeinp
 			return Datas[0];
 		}
 		// get molecular-location
-		public string GetLocation()
+		public string GetLocation(string[] afterpos)
 		{
 			if(IsDataExist == false) {
 				return "";
@@ -95,6 +95,7 @@ namespace makeinp
 				var conPrefex = new string[] { "r", "a", "d" };
 				var conCounts = new int[] { 1, 1, 1 };
 				var idxDict = new Dictionary<string, string>();
+				var idxDictAft = new Dictionary<string, string>();
 				for(var i = 1; i < Datas.Count; i++) {
 					// symbol
 					rst += Datas[i][symbolIndex] + "\t";
@@ -106,17 +107,26 @@ namespace makeinp
 						var isexist = (dat.Trim() != String.Empty);
 						if(isexist) {
 							rst += dat + " " + con + "\t";
-							idxDict.Add(con, val);
+							// is exist locked-pos
+							if(afterpos.Count(a => { return a == con; }) > 0) {
+								idxDictAft.Add(con, val);
+							}
+							else {
+								idxDict.Add(con, val);
+							}
 							conCounts[ci]++;
 						}
 					}
 					rst += "\n";
 				}
 				rst += "\n";
-				for(var c = 0; c < conCounts.Length; c++) {
-					for(var ca = 1; ca < conCounts[c]; ca++) {
-						var key = conPrefex[c] + ca;
-						rst += key + "\t" + idxDict[key] + "\n";
+				foreach(var p in idxDict) {
+					rst += p.Key + "\t" + p.Value + "\n";
+				}
+				if(idxDictAft.Count > 0) {
+					rst += "\n";
+					foreach(var p in idxDictAft) {
+						rst += p.Key + "\t" + p.Value + "\n";
 					}
 				}
 				return rst;
