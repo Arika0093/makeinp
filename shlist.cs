@@ -14,6 +14,7 @@ namespace makeinp
 	{
 		public List<ShellTask> ShellTasks = new List<ShellTask>();
 		public string Outputfiles = "";
+		public string runappname = "";
 
 		public shlist(string[] files)
 		{
@@ -38,19 +39,40 @@ namespace makeinp
 		// save
 		private void button3_Click(object sender, EventArgs e)
 		{
-			var fsav = new SaveFileDialog();
-			fsav.DefaultExt = ".sh";
-			fsav.Filter = "Shell Scripts|*.sh|All Files|*.*";
-			if(fsav.ShowDialog(this) == DialogResult.OK) {
-				var shcmd = "#!/bin/bash\n";
-				var savst = new StreamWriter(fsav.FileName);
-				foreach(var s in ShellTasks) {
-					shcmd += $"g09 < {s.InputFilename} > {s.OutputFilename} {s.TaskDoStr[s.NextDo]}\n";
+			var filename = "";
+			if(!checkBox4.Checked) {
+				var fsav = new SaveFileDialog();
+				fsav.DefaultExt = ".sh";
+				fsav.Filter = "Shell Scripts|*.sh|All Files|*.*";
+				if(fsav.ShowDialog(this) == DialogResult.OK) {
+					filename = fsav.FileName;
+				} else {
+					return;
 				}
-				savst.Write(shcmd);
-				MessageBox.Show("Create Shellscript File:: SUCCESS.");
-				savst.Close();
+			} else {
+				filename = ShellTasks[0].InputDirname + "/sh_" + Guid.NewGuid() + ".sh";
 			}
+			var shcmd = "#!/bin/bash\n";
+			var savst = new StreamWriter(filename);
+			foreach(var s in ShellTasks) {
+				if(checkBox5.Checked) {
+					var runapp = runappname.Replace("$i", s.InputFilename);
+					shcmd += $"{runapp} {s.TaskDoStr[s.NextDo]}\n";
+				}
+				else {
+					var outfilename = (!checkBox1.Checked ? s.OutputFilename : "");
+					var inpchar = (checkBox2.Checked ? "<" : "");
+					var outchar = (checkBox2.Checked && outfilename != "" ? ">" : "");
+					shcmd += $"g09 {inpchar} {s.InputFilename} {outchar} {outfilename} {s.TaskDoStr[s.NextDo]}\n";
+				}
+			}
+			if(checkBox3.Checked) {
+				shcmd += "rm -- \"$0\" &";
+			}
+			savst.Write(shcmd);
+			MessageBox.Show("Create Shellscript File:: SUCCESS.\r\n" + filename);
+			savst.Close();
+			this.Close();
 			return;
 		}
 		// close
@@ -106,6 +128,22 @@ namespace makeinp
 				sel.SubItems[2] = new ListViewItem.ListViewSubItem(sel, sh.NextDo.ToString());
 			}
 		}
+
+		// appname-set checked
+		private void checkBox5_CheckedChanged(object sender, EventArgs e)
+		{
+			if(checkBox5.Checked) {
+				var ed = new simpleedit();
+				ed.titleCaption = "input your app command";
+				ed.description = "$i replaced input-file-path";
+				ed.inputText = runappname;
+				if(ed.ShowDialog() == DialogResult.OK) {
+					runappname = ed.inputText;
+				} else {
+					checkBox5.Checked = false;
+				}
+			}
+		}
 	}
 
 	public class ShellTask
@@ -132,6 +170,10 @@ namespace makeinp
 		public string InputFilenameWithoutExt
 		{
 			get { return Path.GetFileNameWithoutExtension(InputPath); }
+		}
+		public string InputDirname
+		{
+			get { return Path.GetDirectoryName(InputPath); }
 		}
 		public string OutputFilename = "";
 		public NextTaskDo NextDo = NextTaskDo.Nowait;

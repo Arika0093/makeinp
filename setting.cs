@@ -16,7 +16,8 @@ namespace makeinp
 		public string scrName;
 		// history
 		public makeinpdata latestData;
-
+		public string latestFolder;
+		public string shellrunapp;
 		// constructor
 		public setting()
 		{
